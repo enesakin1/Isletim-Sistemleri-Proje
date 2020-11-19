@@ -1,0 +1,1 @@
+gcc -Wall -c shell.c -o shell
