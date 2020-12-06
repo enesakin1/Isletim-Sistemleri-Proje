@@ -1,1 +1,2 @@
-gcc -Wall -c shell.c -o shell
+calistir:
+	gcc -Wall shell.c -o shell
