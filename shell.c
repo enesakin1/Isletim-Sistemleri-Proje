@@ -9,10 +9,10 @@
 
 //temel hatlari belirliyorum. her sey yeniden guzel bir sekilde belirlenebilir
 
-char ***tokenAyir(char *);   // tum komutlari belirle (ileride liste kullanilarak yeniden duzenlenebilir)
-int calistir(char ***); //execute commands
-int komutSayisi;             //toplam komut sayilari
-int maxArgumanSayisi;        //tespit edilen maksimumu komut argumani
+char ***tokenAyir(char *); // tum komutlari belirle (ileride liste kullanilarak yeniden duzenlenebilir)
+int calistir(char ***);    //execute commands
+int komutSayisi;           //toplam komut sayilari
+int maxArgumanSayisi;      //tespit edilen maksimumu komut argumani
 int komutlariTemizle(char ***);
 
 int main(int argc, char *argv[])
@@ -26,19 +26,52 @@ int main(int argc, char *argv[])
     }
     if (argc == 2)
     {
-        //bash gelecek
+        FILE *fp;
+        if ((fp = fopen(argv[1], "r")) == NULL)
+        {
+            perror("Dosya acilamadi");
+            exit(1);
+        }
+        while (fgets(satir, MAXSATIR, fp))
+        {
+            deneme = tokenAyir(satir);
+            printf("prompt> ");
+            for (int i = 0; i < komutSayisi; i++)
+            {
+                for (int j = 0; j < maxArgumanSayisi; j++)
+                {
+                    if(deneme[i][j] == NULL)
+                    {
+                        break;
+                    }
+                    printf("%s ",deneme[i][j]);
+                }
+                if(i != komutSayisi - 1)
+                {
+                    printf("; ");
+                }
+            }
+            printf("\n");
+            
+            if (calistir(deneme))
+            {
+                exit(0);
+            }
+            komutlariTemizle(deneme);
+        }
+
+        fclose(fp);
+        return 0;
     }
     else
     {
         while (1)
         {
-            komutSayisi = 0;
-            maxArgumanSayisi = 0;
             printf("prompt> ");
-            if (fgets(satir, MAXSATIR, stdin) != NULL)
+            if (fgets(satir, MAXSATIR, stdin))
             {
                 deneme = tokenAyir(satir);
-                if(calistir(deneme))
+                if (calistir(deneme))
                 {
                     exit(0);
                 }
@@ -57,6 +90,9 @@ char ***tokenAyir(char *satir)
         fprintf(stderr, "Cok uzun bir komut satiri (bu proje icin '\\n' dahil 512 karakterden fazla)\n");
         satir[MAXSATIR - 2] = '\0';
     }
+
+    komutSayisi = 0;
+    maxArgumanSayisi = 0;
 
     char **tokens = malloc(sizeof(char *) * MAXSATIR);
     int tokenSayisi = 0;
@@ -117,7 +153,7 @@ int calistir(char ***komutlar)
     int quitGeldi = 0;
     for (int i = 0; i < komutSayisi; i++)
     {
-        if(strcmp(komutlar[i][0],"quit") == 0)
+        if (strcmp(komutlar[i][0], "quit") == 0)
         {
             quitGeldi = 1;
             break;
@@ -136,7 +172,8 @@ int calistir(char ***komutlar)
             exit(0);
         }
     }
-    while ((wpid = wait(&status)) > 0); //tum processlerin bitmesini bekle
+    while ((wpid = wait(&status)) > 0)
+        ; //tum processlerin bitmesini bekle
     return quitGeldi;
 }
 
