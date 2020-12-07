@@ -151,6 +151,7 @@ int calistir(char ***komutlar)
     pid_t pid, wpid;
     int status = 0;
     int quitGeldi = 0;
+
     for (int i = 0; i < komutSayisi; i++)
     {
         if (strcmp(komutlar[i][0], "quit") == 0)
@@ -168,12 +169,14 @@ int calistir(char ***komutlar)
                 say++;
             }
             argumanlar[say] = NULL;
-            printf("%d\n", execvp(argumanlar[0], argumanlar));
+            if(execvp(argumanlar[0], argumanlar) < 0)
+            {
+                perror("execvp calismadi");
+            }
             exit(0);
         }
     }
-    while ((wpid = wait(&status)) > 0)
-        ; //tum processlerin bitmesini bekle
+    while ((wpid = wait(&status)) > 0); //tum processlerin bitmesini bekle
     return quitGeldi;
 }
 
