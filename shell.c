@@ -38,7 +38,10 @@ int main(int argc, char *argv[])
             if (fgets(satir, MAXSATIR, stdin) != NULL)
             {
                 deneme = tokenAyir(satir);
-                calistir(deneme);
+                if(calistir(deneme))
+                {
+                    exit(0);
+                }
                 komutlariTemizle(deneme);
             }
         }
@@ -111,16 +114,21 @@ int calistir(char ***komutlar)
 {
     pid_t pid, wpid;
     int status = 0;
+    int quitGeldi = 0;
     for (int i = 0; i < komutSayisi; i++)
     {
-        if ((pid = fork()) == 0) // child processler olusturuluyor
+        if(strcmp(komutlar[i][0],"quit") == 0)
+        {
+            quitGeldi = 1;
+            break;
+        }
+        else if ((pid = fork()) == 0) // child processler olusturuluyor
         {
             int say = 0;
             char *argumanlar[maxArgumanSayisi];
-            printf("cocuk olustu");
-            while (komutlar[0][say] != NULL)
+            while (komutlar[i][say] != NULL)
             {
-                argumanlar[say] = komutlar[0][say];
+                argumanlar[say] = komutlar[i][say];
                 say++;
             }
             argumanlar[say] = NULL;
@@ -129,7 +137,7 @@ int calistir(char ***komutlar)
         }
     }
     while ((wpid = wait(&status)) > 0); //tum processlerin bitmesini bekle
-    return 1;
+    return quitGeldi;
 }
 
 int komutlariTemizle(char ***komutlar) //heapte tutulan yerleri memory leak olmamasi icin birak (daha sonra liste yapilirsa degistirilebilir)
