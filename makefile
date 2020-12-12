@@ -1,2 +1,2 @@
 derle:
-	gcc -Wall shell.c -o shell
+	gcc -g -Wall shell.c -o shell

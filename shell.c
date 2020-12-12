@@ -33,6 +33,7 @@ int main(int argc, char *argv[])
         while (fgets(satir, sizeof satir, fp))
         {
             komutlar = tokenAyir(satir);
+
             printf("prompt> ");
             for (int i = 0; i < komutSayisi; i++)
             {
@@ -156,6 +157,7 @@ int calistir(char ***komutlar)
     pid_t pid, wpid;
     int status = 0;
     int quitGeldi = 0;
+    char *name = "./shell";
 
     for (int i = 0; i < komutSayisi; i++)
     {
@@ -163,6 +165,13 @@ int calistir(char ***komutlar)
         {
             quitGeldi = 1;
             break;
+        }
+        else if (strcmp(komutlar[i][0], name) == 0)
+        {
+            for (int s = i; s < komutSayisi - 1; s ++) 
+            {
+                komutlar[i][0] = komutlar[i + 1][0];
+            }
         }
         else if ((pid = fork()) == 0) // child processler olusturuluyor
         {
