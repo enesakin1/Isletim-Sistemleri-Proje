@@ -1,12 +1,12 @@
 ## Linux Shell
 
----------------------------------------
-Enes Akın				B171210397
-Tahsin Nalcı			G171210082
-Abdullah Akçam			G140910076
-Deniz Sarıbayır			B181210079
-Mehmet Akif Kiraz      	B181210037
-----------------------------------------
+| Ogrenci        | Numara       |
+| ------------- |:-------------:|
+| Enes Akın      | B171210397 |
+| Tahsin Nalcı		|	G171210082|
+| Abdullah Akçam	|		G140910076|
+| Deniz Sarıbayır	|		B181210079|
+| Mehmet Akif Kiraz     | 	B181210037|
 
 ### Tasarıma genel bakış
 	
