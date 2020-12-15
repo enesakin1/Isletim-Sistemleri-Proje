@@ -176,7 +176,7 @@ int calistir(char ***komutlar)
         else if ((pid = fork()) == 0) // child processler olusturuluyor
         {
             int say = 0;
-            char *argumanlar[maxArgumanSayisi];
+            char *argumanlar[maxArgumanSayisi + 1];
             while (komutlar[i][say] != NULL)
             {
                 argumanlar[say] = komutlar[i][say];
