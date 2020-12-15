@@ -1,5 +1,6 @@
 Linux Shell
 
+Grup 5
 -----------------------------------
 Enes Akın       	B171210397 
 Tahsin Nalcı		G171210082
